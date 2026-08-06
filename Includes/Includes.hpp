@@ -130,16 +130,17 @@
 #include <imgui_impl_android.h>
 #include <imgui_impl_opengl3.h>
 #include <jni.hpp>
-#include <il2cpp_dump.h>
-#include <UnityResolve.hpp>
-#include <log.h>
+#include "BNM/BNM.hpp"
 #include <asmjit/asmjit.h>
-#include <gumpp.hpp>
 
 static inline int DobbyHookCompat(void *address, void *replace_func, void **origin_func) {
     return DobbyHook(address, (dobby_dummy_func_t)replace_func, (dobby_dummy_func_t *)origin_func);
 }
 #define DobbyHook DobbyHookCompat
+
+#ifndef LOGI
+#define LOGI(...) ((void) __android_log_print(ANDROID_LOG_INFO, "Demo", __VA_ARGS__))
+#endif
 
 inline bool setup;
 inline int glWidth, glHeight;
