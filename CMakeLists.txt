@@ -74,6 +74,8 @@ add_library(Demo SHARED
     ${BNM_SOURCES}
 )
 
+target_compile_definitions(Demo PRIVATE BNM_USE_DOBBY)
+
 target_link_libraries(Demo
     android
     log
