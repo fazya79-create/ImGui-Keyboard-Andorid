@@ -54,6 +54,7 @@ add_library(kitty STATIC
 )
 
 set(BNM_SOURCES
+    ${INCLUDES_DIR}/BNM/src/BNM.cpp
     ${INCLUDES_DIR}/BNM/src/Class.cpp
     ${INCLUDES_DIR}/BNM/src/ClassesManagement.cpp
     ${INCLUDES_DIR}/BNM/src/Coroutine.cpp
