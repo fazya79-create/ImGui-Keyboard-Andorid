@@ -3,6 +3,34 @@
 static char inputText[256] = "";
 static char inputMulti[1024] = "";
 
+static int selectedAssembly = 0;
+static std::vector<std::string> assemblyNames;
+
+static void DrawAssemblies() {
+    if (!BNM::IsLoaded()) {
+        ImGui::Text("BNM not loaded");
+        return;
+    }
+    if (assemblyNames.empty()) {
+        auto imgs = BNM::Image::GetImages();
+        for (auto &img : imgs) {
+            const char *n = img.GetInfo() ? img.GetInfo()->name : nullptr;
+            assemblyNames.emplace_back(n ? n : "(unnamed)");
+        }
+    }
+    if (ImGui::BeginCombo("Assembly", (size_t) selectedAssembly < assemblyNames.size() ? assemblyNames[selectedAssembly].c_str() : "Select", ImGuiComboFlags_HeightLargest))
+    {
+        for (size_t i = 0; i < assemblyNames.size(); ++i)
+        {
+            bool sel = (size_t) selectedAssembly == i;
+            if (ImGui::Selectable(assemblyNames[i].c_str(), sel)) selectedAssembly = (int) i;
+            if (sel) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::Text("Assembly count: %zu", assemblyNames.size());
+}
+
 void DrawMenu() {
 
     ImGui::Begin("Demo");
@@ -12,6 +40,13 @@ void DrawMenu() {
 
             ImGui::InputText("Input", inputText, sizeof(inputText));
             ImGui::InputTextMultiline("Multi", inputMulti, sizeof(inputMulti), ImVec2(-1, 100));
+
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Assemblies")) {
+
+            DrawAssemblies();
 
             ImGui::EndTabItem();
         }
